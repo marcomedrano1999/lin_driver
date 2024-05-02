@@ -71,8 +71,10 @@ BOARD_InitPins:
  *
  *END**************************************************************************/
 void BOARD_InitPins(void) {
+  CLOCK_EnableClock(kCLOCK_PortA);                           /* Port B Clock Gate Control: Clock enabled */
   CLOCK_EnableClock(kCLOCK_PortB);                           /* Port B Clock Gate Control: Clock enabled */
   CLOCK_EnableClock(kCLOCK_PortC);                           /* Port C Clock Gate Control: Clock enabled */
+  CLOCK_EnableClock(kCLOCK_PortE);                           /* Port E Clock Gate Control: Clock enabled */
 
   PORT_SetPinMux(PORTB, PIN16_IDX, kPORT_MuxAlt3);           /* PORTB16 (pin 62) is configured as UART0_RX */
   PORT_SetPinMux(PORTB, PIN17_IDX, kPORT_MuxAlt3);           /* PORTB17 (pin 63) is configured as UART0_TX */
@@ -87,6 +89,30 @@ void BOARD_InitPins(void) {
   /*UART 4 pins config*/
   PORT_SetPinMux(PORTC, PIN14_IDX, kPORT_MuxAlt3);           /* PORTB16 (pin 86) is configured as UART4_RX */
   PORT_SetPinMux(PORTC, PIN15_IDX, kPORT_MuxAlt3);           /* PORTB17 (pin 87) is configured as UART4_TX */
+
+  /* LED pins */
+  PORT_SetPinMux(PORTB, 22U, kPORT_MuxAsGpio);				 /* PORTB22 (pin 68) is configured as PTB22 */
+  PORT_SetPinMux(PORTB, 21U, kPORT_MuxAsGpio);				 /* PORTB21 (pin 71) is configured as PTB21 */
+  PORT_SetPinMux(PORTE, 26U, kPORT_MuxAsGpio);				 /* PORTE26 (pin 73) is configured as PTE26 */
+
+  /* SW buttons */
+  const port_pin_config_t buttons_config = {/* Internal pull-up resistor is enabled */
+												 kPORT_PullUp,
+												 /* Fast slew rate is configured */
+												 kPORT_FastSlewRate,
+												 /* Passive filter is disabled */
+												 kPORT_PassiveFilterDisable,
+												 /* Open drain is disabled */
+												 kPORT_OpenDrainDisable,
+												 /* High drive strength is configured */
+												 kPORT_HighDriveStrength,
+												 /* Pin is configured as PTA4 */
+												 kPORT_MuxAsGpio,
+												 /* Pin Control Register fields [15:0] are not locked */
+												 kPORT_UnlockRegister};
+
+  PORT_SetPinConfig(PORTA, 4U, &buttons_config);			 /* PORTA4 (pin 38) is configured as PTA4 */
+  PORT_SetPinConfig(PORTC, 6U, &buttons_config);			 /* PORTC6 (pin 78) is configured as PTC6 */
 
 }
 
