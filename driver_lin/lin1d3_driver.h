@@ -29,9 +29,9 @@ typedef enum {
 	lin1d3_max_nodeType
 }lin1d3_nodeType_t;
 
-#define message_size_2_bytes_d (0x01)
-#define message_size_4_bytes_d (0x02)
-#define message_size_8_bytes_d (0x03)
+#define message_size_2_bytes_d (0x02)	// To match with ID4=1, ID5=0
+#define message_size_4_bytes_d (0x01)	// To match with ID4=0, ID5=1
+#define message_size_8_bytes_d (0x03)	// To match with ID4=1, ID5=1
 /*
  * Function pointer type for the message handlers
  * */
@@ -58,7 +58,8 @@ typedef struct {
 	uint8_t skip_uart_init;
 	uint32_t srcclk;		/* UART Clock */
 	uint32_t bitrate;		/* LIN bitrate to set */
-	lin1d3_messageConfig_t messageTable[lin1d3_max_supported_messages_per_node_cfg_d]; /* Table of supported IDs with its callbacks */
+	lin1d3_messageConfig_t* messageTable; /* Table of supported IDs with its callbacks */
+	uint8_t messageTableSize;
 }lin1d3_nodeConfig_t;
 
 /*
