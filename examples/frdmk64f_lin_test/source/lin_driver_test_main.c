@@ -185,12 +185,12 @@ int main(void)
 	}*/
 
     // Node D
-    if (xTaskCreate(Node_D_task, "Node_D_task", test_task_heap_size_d, NULL, init_task_PRIORITY, NULL) != pdPASS)
+    /*if (xTaskCreate(Node_D_task, "Node_D_task", test_task_heap_size_d, NULL, init_task_PRIORITY, NULL) != pdPASS)
 	{
 		PRINTF("Node D Task creation failed!.\r\n");
 		while (1)
 			;
-	}
+	}*/
 
 
     PRINTF(" *** LIN driver demo ***\r\n");
@@ -355,17 +355,21 @@ static void Node_A_task(void *pvParameters)
 	volatile uint8_t task_ID_1_counter = 0;
 	while (kStatus_Success == error)
 	{
-		vTaskDelay(100/portTICK_PERIOD_MS);
-
+		vTaskDelay(25/portTICK_PERIOD_MS);
 		// Send messages that are required every 100 ms
-		//lin1d3_masterSendMessage(master_handle, message_id_2_d);
-		//lin1d3_masterSendMessage(master_handle, message_id_3_d);
+		lin1d3_masterSendMessage(master_handle, message_id_2_d);
+
+		vTaskDelay(25/portTICK_PERIOD_MS);
+		lin1d3_masterSendMessage(master_handle, message_id_3_d);
+
+		vTaskDelay(25/portTICK_PERIOD_MS);
 		lin1d3_masterSendMessage(master_handle, message_id_4_d);
 
+		vTaskDelay(25/portTICK_PERIOD_MS);
 		if(task_ID_1_counter >= 10)
 		{
 			// Send message that is required every second
-			//lin1d3_masterSendMessage(master_handle, message_id_1_d);
+			lin1d3_masterSendMessage(master_handle, message_id_1_d);
 			task_ID_1_counter=0;
 		}
 		else
